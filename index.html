@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>온라인 신청 및 설문 안내</title>
+    <!-- Tailwind CSS 로드 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter 및 Noto Sans KR 로드 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans KR"', 'Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased flex flex-col min-h-screen">
+
+    <!-- 상단 네비게이션 바 -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- 로고 / 타이틀 영역 -->
+                <div class="flex items-center space-x-2.5">
+                    <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-sm">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <a href="#" class="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
+                        온라인 신청서
+                    </a>
+                </div>
+
+                <!-- 데스크톱 네비게이션 메뉴 -->
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="#guide-section" class="text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors">
+                        작성 안내
+                    </a>
+                    <a href="#form-section" class="text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors">
+                        폼 바로가기
+                    </a>
+                    <button type="button" onclick="copyFormLink()" class="text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                        링크 복사
+                    </button>
+                    <!-- 새 창으로 구글 폼 열기 버튼 -->
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdYqd4_GSXiE95pLk7wACxHwYFHrMS5vvuUOkGHOB_INJduAg/viewform?usp=publish-editor" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-white bg-indigo-600 rounded-xl hover:bg-indigo-700 active:bg-indigo-800 transition-all shadow-sm hover:shadow gap-1.5">
+                        <span>새 창에서 열기</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                    </a>
+                </nav>
+
+                <!-- 모바일 메뉴 버튼 -->
+                <div class="flex items-center md:hidden space-x-2">
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdYqd4_GSXiE95pLk7wACxHwYFHrMS5vvuUOkGHOB_INJduAg/viewform?usp=publish-editor" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="inline-flex items-center px-3 py-1.5 text-xs font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors gap-1">
+                        <span>새 창 열기</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                    </a>
+                    <button id="mobile-menu-btn" type="button" class="p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:outline-none" aria-label="메뉴 열기">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 모바일 드롭다운 메뉴 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-4 space-y-2 shadow-lg">
+            <a href="#guide-section" onclick="toggleMobileMenu()" class="block px-3 py-2.5 rounded-xl text-base font-medium text-slate-700 hover:text-indigo-600 hover:bg-slate-50">
+                작성 안내
+            </a>
+            <a href="#form-section" onclick="toggleMobileMenu()" class="block px-3 py-2.5 rounded-xl text-base font-medium text-slate-700 hover:text-indigo-600 hover:bg-slate-50">
+                폼 바로가기
+            </a>
+            <button type="button" onclick="copyFormLink(); toggleMobileMenu();" class="w-full text-left px-3 py-2.5 rounded-xl text-base font-medium text-slate-700 hover:text-indigo-600 hover:bg-slate-50 flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                </svg>
+                설문 링크 복사하기
+            </button>
+        </div>
+    </header>
+
+    <!-- 알림 토스트 메시지 (링크 복사 시 표시) -->
+    <div id="toast-message" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-slate-900 text-white px-4 py-3 rounded-xl shadow-lg flex items-center space-x-2.5 text-sm font-medium">
+            <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span>설문 링크가 클립보드에 복사되었습니다.</span>
+        </div>
+    </div>
+
+    <!-- 메인 콘텐츠 영역 -->
+    <main class="flex-grow max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-6">
+        
+        <!-- 안내 배너 카드 -->
+        <section id="guide-section" class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="space-y-2">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100">
+                        온라인 접수 및 설문
+                    </span>
+                    <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+                        참여 및 신청서 작성
+                    </h1>
+                    <p class="text-sm sm:text-base text-slate-600 leading-relaxed">
+                        아래 양식을 통해 바로 작성하실 수 있습니다. 화면이 작거나 외부 브라우저에서 편하게 작성하고 싶으시면 <strong>'새 창에서 구글 폼 열기'</strong> 버튼을 이용해 주세요.
+                    </p>
+                </div>
+                <div class="flex-shrink-0">
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdYqd4_GSXiE95pLk7wACxHwYFHrMS5vvuUOkGHOB_INJduAg/viewform?usp=publish-editor" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="w-full sm:w-auto inline-flex items-center justify-center px-5 py-3 text-sm font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-xl hover:bg-indigo-100 transition-colors gap-2">
+                        <span>새 창에서 구글 폼 열기</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 구글 폼 임베드 컨테이너 -->
+        <section id="form-section" class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden relative">
+            <!-- 상단 상태 바 -->
+            <div class="bg-slate-50 border-b border-slate-200/80 px-5 py-3 flex items-center justify-between text-xs text-slate-500">
+                <div class="flex items-center space-x-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span>Google Forms 보안 연결됨</span>
+                </div>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdYqd4_GSXiE95pLk7wACxHwYFHrMS5vvuUOkGHOB_INJduAg/viewform?usp=publish-editor" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="text-indigo-600 hover:text-indigo-800 font-medium underline underline-offset-2">
+                    폼이 보이지 않나요? 직접 열기
+                </a>
+            </div>
+
+            <!-- 로딩 스피너 (iframe 로드 전 표시) -->
+            <div id="iframe-loader" class="absolute inset-x-0 top-12 bottom-0 bg-white/90 flex flex-col items-center justify-center z-10 transition-opacity duration-300">
+                <div class="w-10 h-10 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin mb-3"></div>
+                <p class="text-sm font-medium text-slate-600">설문 양식을 불러오는 중입니다...</p>
+            </div>
+
+            <!-- 반응형 Google Form Iframe -->
+            <div class="w-full bg-white">
+                <iframe 
+                    id="google-form-iframe"
+                    src="https://docs.google.com/forms/d/e/1FAIpQLSdYqd4_GSXiE95pLk7wACxHwYFHrMS5vvuUOkGHOB_INJduAg/viewform?embedded=true" 
+                    class="w-full min-h-[780px] sm:min-h-[850px] border-0 block"
+                    title="구글 설문지 및 신청서"
+                    loading="lazy"
+                    onload="hideLoader()">
+                    로드 중…
+                </iframe>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 하단 푸터 -->
+    <footer class="bg-white border-t border-slate-200 mt-auto">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm text-slate-500">
+            <p>© 2026 온라인 신청 및 설문 안내. All rights reserved.</p>
+            <div class="flex items-center space-x-4">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdYqd4_GSXiE95pLk7wACxHwYFHrMS5vvuUOkGHOB_INJduAg/viewform?usp=publish-editor" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="hover:text-indigo-600 transition-colors">
+                    원본 구글 폼 바로가기
+                </a>
+                <span>•</span>
+                <a href="#" class="hover:text-indigo-600 transition-colors">맨 위로</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 인터랙션 스크립트 -->
+    <script>
+        // 모바일 메뉴 토글
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+
+        // Iframe 로드 완료 시 로딩 스피너 숨김
+        function hideLoader() {
+            const loader = document.getElementById('iframe-loader');
+            if (loader) {
+                loader.classList.add('opacity-0', 'pointer-events-none');
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 300);
+            }
+        }
+
+        // 안전장치: 네트워크 지연 등으로 onload 이벤트가 늦어질 경우 4초 후 로더 자동 해제
+        window.addEventListener('load', () => {
+            setTimeout(hideLoader, 4000);
+        });
+
+        // 설문 링크 복사 기능 (iFrame 환경 호환을 위한 execCommand 사용)
+        function copyFormLink() {
+            const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdYqd4_GSXiE95pLk7wACxHwYFHrMS5vvuUOkGHOB_INJduAg/viewform?usp=publish-editor";
+            const tempInput = document.createElement('textarea');
+            tempInput.value = formUrl;
+            tempInput.style.position = 'fixed';
+            tempInput.style.left = '-9999px';
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            
+            try {
+                document.execCommand('copy');
+                showToast();
+            } catch (err) {
+                console.error('클립보드 복사 실패:', err);
+            } finally {
+                document.body.removeChild(tempInput);
+            }
+        }
+
+        // 토스트 알림 표시 함수
+        let toastTimeout;
+        function showToast() {
+            const toast = document.getElementById('toast-message');
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
